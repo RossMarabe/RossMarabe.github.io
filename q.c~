@@ -1,0 +1,390 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct{
+	char Fname[20];
+	char Lname[20];
+	char Unit[20];
+	char Mnumber[20];
+}s_type;
+
+typedef struct{
+	int unitn;
+	int max;
+	int dormers;
+}u_info;
+	
+typedef struct tenant{
+	s_type x;
+	struct tenant *next;
+	
+}tenant;
+
+
+typedef struct unit{
+	u_info x;
+	struct tenant *tenant;
+	struct unit *next;
+}unit;
+
+void AddU(unit **h, u_info*, int);
+void RemoveU(unit **h, u_info*);
+
+void AddT(s_type *, int, char[], char [], char [], char []);
+void SearchT(s_type *, int);
+void MoveT();
+void RemoveT(s_type *, int, int);
+void EditT(s_type*, int, int);
+
+void Master(s_type *, int);
+void List();
+
+void Save(s_type *, int);
+void Exit();
+
+int Checker(s_type *, int, char[]);
+
+
+
+
+int main(){
+	
+	
+	FILE *fs;
+	s_type tenant[100];
+	int option, count=0, position;
+	char first[20], last[20], unit[20], number[20], unitn[20], dormers[20];
+	int i, a, n;
+	struct unit *h = NULL;
+	u_info x;
+	
+	
+	do{
+	printf("\n****************************************\n");
+	printf("\n****Welcome to Edna's Boarding house****\n");
+	printf("\n******************MENU******************\n");
+	printf("\n[1] Add Unit\n");
+	printf("\n[2] Add Tenant\n");
+	printf("\n[3] Search Tenant\n");
+	printf("\n[4] Move Tenant\n");
+	printf("\n[5] Remove Tenant\n");
+	printf("\n[6] Edit Tenant\n");
+	printf("\n[7] Print Master List of Occupants\n");
+	printf("\n[8] Print List Of Occupants Per Unit \n");
+	printf("\n[9] Remove Unit\n");
+	printf("\n[10] Save System\n");
+	printf("\n[11] Exit\n");
+	printf("\n****************************************\n\n");
+	
+	
+	printf("\nChoice:");
+	scanf("%d", &option);
+	
+	if(option==1){
+		printf("\n*********ADD UNIT**********\n");
+		printf("\n*************************\n\n");
+		printf("Enter Unit Name: ");
+		scanf(" %[^\n]s", unitn);
+	
+		printf("Enter Number of Dormers: ");
+		scanf(" %[^\n]d", dormers);
+		/*if(Checker( tenant, count, number)<0){ 
+			
+			AddU(&h, &x, *dormers);
+			
+			count++;
+		}
+		else printf("\nCan't add unit. Unit already exists.");
+		
+	
+	}*/
+	
+	if(option==2){
+		printf("\n********ADD TENANT*********\n");
+		printf("\n*************************\n\n");
+		printf("Enter First Name: ");
+		scanf(" %[^\n]s", first);
+	
+		printf("Enter Last Name: ");
+		scanf(" %[^\n]s", last);
+		
+		printf("Enter Unit: ");
+		scanf(" %[^\n]s", unit);
+		
+		printf("Enter 11 digit Mobile Number: ");
+		scanf(" %[^\n]s", number);
+	
+		if(Checker(tenant, count, number)<0){
+			AddT(tenant, count, first, last, number, unit); 
+			count++;
+		}
+		else{printf("\nCan't add tenant. Tenant mobile number already exists.");	
+		}
+	}
+	if(option==3){
+		printf("\n******SEARCH TENANT********\n");
+		printf("\n*************************\n\n");
+		if(count==0) printf("Empty list.\n");
+		else{
+				printf("Enter Tenant First Name.: ");
+				scanf(" %[^\n]s", first);
+				printf("Enter Tenant Last Name.: ");
+				scanf(" %[^\n]s", last);
+			
+				position = Checker(tenant, count, number);
+						
+				if(position!=-1) printf("\nTenant does not exist.\n");
+				else{
+					printf("\n****Tenant's information****\n");
+					printf("\nFirst Name: %s\n", (tenant+i)->Mnumber);
+					printf("Last Name: %s\n",(tenant+i)->Fname);
+					printf("PhoneNo.: %s\n", (tenant+i)->Lname);
+					printf("Unit: %s\n", (tenant+i)->Unit);
+				}
+		
+		}
+	}
+	
+	if (option==4){
+		printf("\n*******MOVE TENANT*********\n");
+		printf("\n*************************\n\n");
+		
+		if(count==0) printf("Empty list.\n");
+		else{
+				printf("Enter Tenant First Name.: ");
+				scanf(" %[^\n]s", first);
+				printf("Enter Tenant Last Name.: ");
+				scanf(" %[^\n]s", last);
+			
+				position = Checker(tenant, count, number);
+						
+				if(position<0) printf("\nTenant does not exist.\n");
+				else{
+					
+				}
+	}
+	}
+	
+	
+	if(option==5){
+		printf("\n*******REMOVE TENANT*******\n");
+		printf("\n*************************\n\n");
+		
+		if(count==0) printf("Empty list.\n");
+		else{
+				printf("Enter Tenant First Name.: ");
+				scanf(" %[^\n]s", first);
+				printf("Enter Tenant Last Name.: ");
+				scanf(" %[^\n]s", last);
+				
+			
+				position = Checker(tenant, count, number);
+						
+			if(position!=-1) printf("\nTenant does not exist.\n");
+			else{
+				RemoveT(tenant, count, position);
+				count--;
+					
+			}
+	}
+	}
+	
+	if(option==6){
+		printf("\n********EDIT TENANT*********\n");
+		printf("\n*************************\n\n");
+		if(count==0) printf("Empty list.\n");
+		else{
+				printf("Enter Tenant First Name.: ");
+				scanf(" %[^\n]s", first);
+				printf("Enter Tenant Last Name.: ");
+				scanf(" %[^\n]s", last);
+			
+				position = Checker(tenant, count, number);
+						
+				if(position!=-1)printf("\nTenant does not exist.\n");
+				else EditT(tenant, count, position);
+			}
+	}
+	if(option==7){
+		printf("\n********MASTER LIST*********\n");
+		printf("\n*************************\n\n");
+		if(count==0) printf("\nSorry, the list is empty.\n");
+			else Master(tenant, count);
+	}
+	
+	if (option==8){
+		printf("\n*****OCCUPANTS PER UNIT*****\n");
+		printf("\n*************************\n\n");
+	}
+	
+	if(option==9){
+		printf("\n********REMOVE UNIT**********\n");
+		printf("\n *************************\n\n");
+	//lagay recycle ng delete singly
+	}
+	
+	if(option==10){
+		printf("\n********SAVE SYSTEM**********\n");
+		printf("\n*************************\n\n");
+		printf("\n**Program already saving...**\n");
+	}
+	if(option==11){
+		printf("\n**********EXIT**************\n");
+		printf("\n*************************\n\n");
+		printf("\n**Thank you for using this program**\n");
+		break;
+	}
+		if(option<1 || option>12) printf("\nInvalid option. Please choose again.\n");
+	
+	
+	
+	}while(option!=12);
+	Save(tenant, count);
+}
+
+/*void AddU(unit **h, u_info *x, int dormers){ 
+	
+	unit *temp, *p, *ptr;
+	(struct unit*)malloc(dormers*sizeof(unit));
+	
+	temp = (unit*) malloc(sizeof(unit));
+	
+	temp->x = ;
+	temp->next = NULL;
+	
+	if(*h==NULL)*h=temp; 
+	
+	else{
+		p=*h;
+		
+		while(p->x == temp->x){
+			
+			if(p->next==NULL) break;
+			
+			else{
+				//printf("moving");
+				ptr = p;
+				p = p->next; //checker
+				//printf("%d ", p->x);
+			}
+			
+		}
+		
+		if(p->next==NULL){ //insert at tail
+			
+			if(p->x == temp->x){
+				temp->next = p;
+				ptr->next = temp;
+			}
+			else p->next = temp;
+		}
+		
+		else{
+			
+			if(p==*h){ //insert at head
+				//printf("dito ako pumasok");
+				temp->next = p;
+				*h = temp;
+			}
+			
+			else{ //insert at middle
+				temp->next = p;
+				ptr->next = temp;
+			}
+		}
+	}
+	
+}*/
+
+
+void AddT(s_type *tenant, int count, char number[], char first[], char last[], char unit[]){
+
+	strcpy((tenant+count)->Fname, first);
+	strcpy((tenant+count)->Lname, last);
+	strcpy((tenant+count)->Unit, unit);
+	strcpy((tenant+count)->Mnumber, number);
+	
+	printf("\nTenant was successfully added!");
+	
+}
+
+void EditT(s_type *tenant, int count, int pos){
+	
+	int location;
+	char snum[20];
+	
+	
+	printf("\nEnter New Mobile Number: ");
+			scanf(" %[^\n]s", (tenant+location)->Lname);
+			
+			printf("\nMobile number of tenant was successfully edited!\n");
+
+}
+
+void RemoveT(s_type *tenant, int num, int pos){
+	
+	int i;
+	
+	for (i=pos; i<(num-1); i++){
+		
+		strcpy((tenant+i)->Fname, (tenant+i+1)->Fname);
+		strcpy((tenant+i)->Lname, (tenant+i+1)->Lname);
+		strcpy((tenant+i)->Mnumber, (tenant+i+1)->Mnumber);
+		strcpy((tenant+i)->Unit, (tenant+i+1)->Unit);
+		
+	}
+		
+	printf("\nStudent was successfully deleted!\n");
+}
+
+void Master(s_type *tenant, int num){
+
+	int i;
+	
+	for(i=0; i<num; i++){
+	
+		printf("\nFirst Name: %s\n", (tenant+i)->Mnumber);
+		printf("Last Name: %s\n",(tenant+i)->Fname);
+		printf("PhoneNo.: %s\n", (tenant+i)->Lname);
+		printf("Unit: %s\n", (tenant+i)->Unit);
+		
+	}
+	
+}
+
+void Save(s_type *tenant, int num){
+
+	FILE *fs;
+	
+	int i;
+	fs = fopen("tenants.txt", "w");
+	
+	
+	
+	for(i=0; i<num; i++){
+	
+		fprintf(fs, "%s\n", (tenant+i)->Mnumber);
+		fprintf(fs, "%s\n", (tenant+i)->Fname);
+		fprintf(fs, "%s\n\n", (tenant+i)->Lname);
+		fprintf(fs, "%s\n\n", (tenant+i)->Unit);
+		
+	}
+	
+	fclose(fs);
+	
+}
+
+int Checker(s_type *tenant, int count, char number[]){
+	
+	int i=0;
+	
+	while(i<count){
+		if(strcmp((tenant+i)->Mnumber, number)==0) return i;
+		else i++;
+	}
+	
+	return -1;
+	
+}
+	

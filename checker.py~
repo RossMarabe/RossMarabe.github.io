@@ -1,0 +1,26 @@
+string = input("Enter a string: ")
+if len(string) <= 10:
+	cont = "" #used to check if the string  contains consecutive "_"
+	mema = 1 #used just to print "Valid Identifier" as soon as 'for loop' is done.
+	if string[0] in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
+		if string[len(string)-1] == "_":
+			print("Invalid Identifier!")
+		else: 
+			for i in range(0,len(string)):
+				if cont == "__":
+						print("Invalid Identifier!")
+						mema = 0
+						break
+				if string[i] == "_":
+					cont+=string[i]
+				
+				else:	
+					cont=""
+			
+			
+			if mema != 0:
+				print("Valid Identifier.")
+	else:
+		print("Invalid Identifier!")
+else:
+	print("Should be less than 10 characters!")

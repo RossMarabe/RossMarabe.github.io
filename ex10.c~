@@ -1,0 +1,202 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node_tag{
+	int x;
+	struct node_tag *next;
+} NODE;
+
+void printMenu();
+
+void insertAtHead (NODE **head, int x);
+
+void insertAtMiddle (NODE *head, int x);
+
+void insertAtTail(NODE *head, int x);
+
+void deleteAtHead(NODE **head, int x);
+
+void deleteAtMiddle(NODE *head, int x);
+
+void ViewList(NODE *ptr);
+
+
+int main() {
+	
+	NODE *head = NULL;
+	int x;	
+	int choice;
+
+	do{
+		printMenu();
+			printf("Selection: "); //used to select a function in the menu
+			scanf("%d", &choice);
+			printf("\n");
+			printf("\n");
+		
+		if(choice == 1){
+			printf("------- INSERT AT HEAD -----\n");
+			printf("\n");
+
+			printf("Enter the number you want to insert at the HEAD of the linked list: ");			
+			scanf("%d", &x);
+			
+			insertAtHead(&head, x);
+		}
+		
+
+		if(choice == 2){
+			printf("--- INSERT AT MIDDLE ---\n");
+			printf("\n");
+
+			printf("Enter the number you want to insert at the MIDDLE of the linked list: ");			
+			scanf("%d", &x);
+			
+			insertAtMiddle(head, x);
+		}
+
+		if(choice == 3){
+			printf("--- INSERT AT TAIL ---\n");
+			printf("\n");
+
+			printf("Enter the number you want to insert at the TAIL of the linked list: ");			
+			scanf("%d", &x);
+			
+			insertAtTail(head, x);
+		}
+
+		if(choice == 4){
+			printf("--- DELETE AT HEAD ---\n");
+			printf("\n");
+
+			deleteAtHead(&head, x);
+		}
+		
+		
+		if(choice == 5){
+			printf("--- DELETE AT MIDDLE ---\n");
+			printf("\n");
+
+			printf("Enter the number you want to insert at the MIDDLE of the linked list: ");			
+			scanf("%d", &x);
+			
+			deleteAtMiddle(head, x);
+		}
+
+		if(choice == 6){
+			ViewList(head);
+		}
+
+	} while (choice!=7);
+
+	return 0;
+}
+
+void printMenu(){ //function used to print the main menu
+
+	printf("\n-------- NODES --------\n");
+	printf("[1] Insert at Head\n");
+	printf("[2] Insert at Middle\n");
+	printf("[3] Insert at Tail\n");
+	printf("[4] Delete at Head\n");
+	printf("[5] Delete at Middle\n");
+	printf("[6] View List\n");
+	printf("[7] Exit\n");
+	printf("------------------------\n");
+	
+}
+
+
+void insertAtHead (NODE **head, int x) {
+	NODE *temp;
+
+	temp = (NODE *)malloc(sizeof(NODE));
+	temp->next = NULL;
+	temp->x = x;
+
+	temp->next = *head;
+	*head = temp;
+}
+
+void insertAtMiddle (NODE *head, int x) {
+	NODE *temp, *ptr;
+
+	temp = (NODE *)malloc(sizeof(NODE));
+	temp->next = NULL;
+	temp->x = x;
+
+	ptr = head;
+	
+	while(ptr->next != NULL && ptr->next->x < temp->x) {
+		ptr = ptr->next;
+	}
+
+	temp->next = ptr->next;
+	ptr->next = temp;
+
+}
+
+void insertAtTail (NODE *head, int x) {
+	NODE *temp, *ptr;
+	
+	temp = (NODE *)malloc(sizeof(NODE));
+	temp->next = NULL;
+	temp->x = x;
+	
+	ptr = head;
+	
+	while(ptr->next != NULL && ptr->next->x < temp->x) {
+		ptr = ptr->next;
+	}
+	
+	temp->next = ptr->next;
+	ptr->next = temp;
+
+}
+
+void deleteAtHead(NODE **head, int x) {
+	NODE *ptr;
+	
+	ptr = *head;
+	*head = ptr->next;
+	free(ptr);
+	
+}
+
+void deleteAtMiddle(NODE *head, int x) {
+	NODE *temp, *ptr;
+	
+	ptr = head;
+	temp->x = x;
+	
+	while(ptr->next != NULL && ptr->next->x < temp->x) {
+		ptr = ptr->next;	
+	}
+	
+	ptr->next = temp;
+	ptr = temp->next;
+	
+	free(temp);
+	
+	
+}
+
+
+void freeList(NODE **head){
+	NODE *ptr;
+	while(*head != NULL){
+		ptr = *head;
+		*head = (*head)->next;
+		free(ptr);
+	}
+}
+
+
+void ViewList(NODE *ptr) {
+	printf("HEAD -> ");
+		while(ptr != NULL){
+			printf("%d -> ", ptr->x);
+			ptr = ptr->next;
+		}
+	printf("NULL\n");
+}

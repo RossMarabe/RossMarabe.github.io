@@ -1,0 +1,21 @@
+import java.io.Serializable;
+
+public class MobilePhone implements Serializable{
+	public String name;
+	public String os;
+	public int batteryLife;
+	
+	public MobilePhone(String name, String os){
+		this.name = name;
+		this.os = os;
+		this.batteryLife = 100;
+	}
+	
+	/*Provide getters for three attributes*/
+	
+	public void use(){
+		this.batteryLife--;
+		if(batteryLife < 0)
+			this.batteryLife = 0;
+	}
+}

@@ -1,0 +1,25 @@
+body {
+	/*http://agi.mapeadosencolombia.co/background-for-website/*/
+}
+
+h1 {
+    color: black;
+    text-align: center; 
+}
+
+p{
+    font-family: verdana;
+    font-size: 20px;
+}
+img{
+	width : 380px;
+	height : 400px;
+}
+footer{
+	display: block;
+}
+
+#wiw{
+	width: 50px;
+	height: 50px;
+}
